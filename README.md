@@ -1,48 +1,19 @@
 <p align="center">
 
   <h3>🛠️ Technologies Used</h3>
+<p align="center">
 
-  <p>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" width="55" alt="Python Logo">
-    <b>Python</b> – Core language for backend development
-  </p>
-
-  <p>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Flask_logo.svg" width="60" alt="Flask Logo">
-    <b>Flask</b> – Lightweight backend web framework
-  </p>
-
-  <p>
-    <img src="https://raw.githubusercontent.com/napsternxg/spleeter-web/master/static/img/spleeter_logo.png" width="70" alt="Spleeter Logo">
-    <b>Spleeter</b> – AI model for vocal & instrumental separation
-  </p>
-
-  <p>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" width="60" alt="Tailwind Logo">
-    <b>Tailwind CSS</b> – Modern frontend styling framework
-  </p>
-
-  <p>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg" width="55" alt="HTML5 Logo">
-    <b>HTML5</b> – Structure of the web app
-  </p>
-
-  <p>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" width="55" alt="JavaScript Logo">
-    <b>JavaScript</b> – Dynamic interactions & client-side logic
-  </p>
-
-  <p>
-    <img src="https://img.shields.io/badge/License-MIT-green?logo=open-source-initiative&logoColor=white" alt="MIT License">
-    <b>License:</b> MIT
-  </p>
-
-  <p>
-    <img src="https://img.shields.io/badge/Status-Active-success?logo=github" alt="Active Status">
-    <b>Status:</b> Active Development
-  </p>
+  <table>
+    <tr><td align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" width="50"><br><b>Python</b><br><sub>Core backend language</sub></td></tr>
+    <tr><td align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Flask_logo.svg" width="55"><br><b>Flask</b><br><sub>Web framework</sub></td></tr>
+    <tr><td align="center"><img src="https://raw.githubusercontent.com/napsternxg/spleeter-web/master/static/img/spleeter_logo.png" width="60"><br><b>Spleeter</b><br><sub>AI source separation</sub></td></tr>
+    <tr><td align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" width="55"><br><b>Tailwind CSS</b><br><sub>UI Styling</sub></td></tr>
+    <tr><td align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/3/38/HTML5_Badge.svg" width="50"><br><b>HTML5</b><br><sub>Frontend Structure</sub></td></tr>
+    <tr><td align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" width="50"><br><b>JavaScript</b><br><sub>Frontend Logic</sub></td></tr>
+  </table>
 
 </p>
+
 
 
 
