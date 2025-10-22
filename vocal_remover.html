@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Vocal Remover</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        
+        #progress-bar-inner {
+            animation: indeterminate 2s linear infinite;
+        }
+        @keyframes indeterminate {
+            0% {
+                transform: translateX(-100%) scaleX(0.3);
+            }
+            50% {
+                transform: translateX(0) scaleX(0.8);
+            }
+            100% {
+                transform: translateX(100%) scaleX(0.3);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans antialiased">
+
+    <div class="min-h-screen flex flex-col items-center justify-center p-4">
+        
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-white mb-2">AI Vocal Remover</h1>
+            <p class="text-lg md:text-xl text-gray-400">Separate vocals and music from any song.</p>
+        </header>
+
+        <div class="w-full max-w-lg bg-gray-800 rounded-xl shadow-2xl p-6 md:p-8">
+            
+            <div id="upload-step" class="space-y-4">
+                <p id="status-message" class="text-center text-gray-400">Upload an audio file (MP3 or WAV) to begin.</p>
+                
+                <input type="file" id="file-upload" class="hidden" accept=".mp3,.wav">
+                <label for="file-upload" id="file-label" class="cursor-pointer bg-gray-700 hover:bg-gray-600 text-gray-300 font-medium py-3 px-5 rounded-lg w-full flex items-center justify-center transition duration-200 truncate">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    <span id="file-name">Choose an audio file...</span>
+                </label>
+
+                <button id="process-button" disabled class="w-full bg-blue-600 text-white font-bold py-3 px-5 rounded-lg opacity-50 cursor-not-allowed transition duration-200 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l11.23 6.5L9 19z" />
+                    </svg>
+                    Separate Audio
+                </button>
+            </div>
+
+            <div id="processing-step" class="hidden space-y-4">
+                <p id="processing-message" class="text-center text-lg font-medium text-blue-300">Processing... this may take a moment.</p>
+                <div class="w-full bg-gray-700 rounded-full h-2.5 overflow-hidden">
+                    <div id="progress-bar-inner" class="bg-blue-500 h-2.5 rounded-full" style="width: 100%;"></div>
+                </div>
+            </div>
+
+            <div id="download-step" class="hidden space-y-4">
+                <p class="text-center text-lg font-medium text-green-300">Separation Complete!</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <a id="download-vocals" href="#" download="vocals.wav" class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-5 rounded-lg transition duration-200 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M5.5 13a3.5 3.5 0 01-.166-6.981l.006-.003a5.002 5.002 0 019.32-1.949 3.5 3.5 0 010 6.982l-.006.003A3.5 3.5 0 015.5 13zM12 11a1 1 0 10-2 0v3a1 1 0 102 0v-3z" />
+                        </svg>
+                        Download Vocals
+                    </a>
+                    <a id="download-instrumental" href="#" download="instrumental.wav" class="bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-5 rounded-lg transition duration-200 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M5.5 13a3.5 3.5 0 01-.166-6.981l.006-.003a5.002 5.002 0 019.32-1.949 3.5 3.5 0 010 6.982l-.006.003A3.5 3.5 0 015.5 13zM12 11a1 1 0 10-2 0v3a1 1 0 102 0v-3z" />
+                        </svg>
+                        Download Music
+                    </a>
+                </div>
+                <button id="start-over-button" class="w-full bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-5 rounded-lg transition duration-200">
+                    Process Another File
+                </button>
+            </div>
+
+            <div id="error-box" class="hidden mt-4 bg-red-800 border border-red-700 text-red-100 px-4 py-3 rounded-lg">
+                <strong>Error:</strong>
+                <span id="error-message"></span>
+            </div>
+
+        </div>
+
+        <footer class="text-center text-gray-500 mt-8">
+            <p>Powered by Mohamed El Ghazali.</p>
+        </footer>
+    </div>
+
+    <script>
+        const uploadStep = document.getElementById('upload-step');
+        const processingStep = document.getElementById('processing-step');
+        const downloadStep = document.getElementById('download-step');
+        
+        const statusMessage = document.getElementById('status-message');
+        const processingMessage = document.getElementById('processing-message');
+        
+        const fileUpload = document.getElementById('file-upload');
+        const fileLabel = document.getElementById('file-label');
+        const fileName = document.getElementById('file-name');
+        
+        const processButton = document.getElementById('process-button');
+        
+        const downloadVocals = document.getElementById('download-vocals');
+        const downloadInstrumental = document.getElementById('download-instrumental');
+        const startOverButton = document.getElementById('start-over-button');
+        
+        const errorBox = document.getElementById('error-box');
+        const errorMessage = document.getElementById('error-message');
+
+        let currentTaskId = null;
+        let pollInterval = null;
+
+        const API_BASE_URL = 'http://127.0.0.1:5000';
+
+        fileUpload.addEventListener('change', handleFileSelect);
+        processButton.addEventListener('click', handleUpload);
+        startOverButton.addEventListener('click', resetUI);
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.type === 'audio/mpeg' || file.type === 'audio/wav') {
+                    fileName.textContent = file.name;
+                    processButton.disabled = false;
+                    processButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                    statusMessage.textContent = `Ready to process: ${file.name}`;
+                    errorBox.classList.add('hidden');
+                } else {
+                    showError('Invalid file type. Please select an MP3 or WAV file.');
+                    resetUI();
+                }
+            }
+        }
+
+        async function handleUpload() {
+            const file = fileUpload.files[0];
+            if (!file) return;
+
+            showProcessingUI('Uploading file...');
+            
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/upload`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    const errData = await response.json();
+                    throw new Error(errData.error || `Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                currentTaskId = data.task_id;
+                showProcessingUI('File is in queue. Waiting to process...');
+                pollTaskStatus();
+                
+            } catch (error) {
+                console.error('Upload error:', error);
+                showError(`Upload failed: ${error.message}. Is the Python server running?`);
+            }
+        }
+
+        function pollTaskStatus() {
+            if (pollInterval) clearInterval(pollInterval);
+
+            pollInterval = setInterval(async () => {
+                if (!currentTaskId) {
+                    clearInterval(pollInterval);
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/status/${currentTaskId}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`Server error: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+
+                    if (data.status === 'SUCCESS') {
+                        clearInterval(pollInterval);
+                        showDownloadUI(data.result);
+                    } else if (data.status === 'FAILURE') {
+                        clearInterval(pollInterval);
+                        showError(data.message || 'Processing failed.');
+                    } else if (data.status === 'PROCESSING') {
+                        showProcessingUI(data.message || 'Processing...');
+                    } else {
+                        showProcessingUI(data.message || 'Waiting in queue...');
+                    }
+
+                } catch (error) {
+                    clearInterval(pollInterval);
+                    console.error('Polling error:', error);
+                    showError(`Connection lost: ${error.message}. Please check server and try again.`);
+                }
+            }, 2500);
+        }
+
+        function showProcessingUI(message) {
+            uploadStep.classList.add('hidden');
+            downloadStep.classList.add('hidden');
+            errorBox.classList.add('hidden');
+            
+            processingStep.classList.remove('hidden');
+            processingMessage.textContent = message;
+        }
+
+        function showDownloadUI(result) {
+            processingStep.classList.add('hidden');
+            uploadStep.classList.add('hidden');
+            
+            downloadStep.classList.remove('hidden');
+            
+            downloadVocals.href = `${API_BASE_URL}/download/${currentTaskId}/${result.vocals}`;
+            downloadInstrumental.href = `${API_BASE_URL}/download/${currentTaskId}/${result.instrumental}`;
+        }
+
+        function showError(message) {
+            processingStep.classList.add('hidden');
+            downloadStep.classList.add('hidden');
+            
+            uploadStep.classList.remove('hidden');
+            
+            errorBox.classList.remove('hidden');
+            errorMessage.textContent = message;
+            
+            processButton.disabled = true;
+            processButton.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+
+        function resetUI() {
+            if (pollInterval) clearInterval(pollInterval);
+            currentTaskId = null;
+            
+            downloadStep.classList.add('hidden');
+            processingStep.classList.add('hidden');
+            errorBox.classList.add('hidden');
+            
+            uploadStep.classList.remove('hidden');
+            
+            fileUpload.value = null;
+            fileName.textContent = 'Choose an audio file...';
+            statusMessage.textContent = 'Upload an audio file (MP3 or WAV) to begin.';
+            
+            processButton.disabled = true;
+            processButton.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+    </script>
+</body>
+</html>
+
