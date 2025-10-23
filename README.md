@@ -80,7 +80,7 @@ The backend runs locally at:
 
 ### 🔹 2. Frontend Usage
 
-1. Open `vocal_remover.html` in your browser.
+1. Open `Index.html` in your browser.
 2. Select your `.mp3` or `.wav` file.
 3. Click **“Separate Audio”**.
 4. Wait for AI processing to complete.
@@ -94,11 +94,11 @@ The backend runs locally at:
 AI-Vocal-Remover/
 │
 ├── main.py                 # Flask backend server
+
 ├── 
+│   └── Index.html  # Frontend UI
 │   ├── style.css           # Tailwind / custom styles
-│   └── script.js           # JS for upload & progress
-├── 
-│   └── vocal_remover.html  # Frontend UI
+│   └── script.js         # JS for upload & progress
 ├── separated_audio/        # Output folder for vocals & instrumentals
 └── README.md
 ```
