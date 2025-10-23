@@ -1,0 +1,19 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+
+#progress-bar-inner {
+    animation: indeterminate 2s linear infinite;
+}
+@keyframes indeterminate {
+    0% {
+        transform: translateX(-100%) scaleX(0.3);
+    }
+    50% {
+        transform: translateX(0) scaleX(0.8);
+    }
+    100% {
+        transform: translateX(100%) scaleX(0.3);
+    }
+}
